@@ -4,6 +4,7 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 app.use(express.json());
+
 mongoose.connect(  //to connect to our mongodb server
     process.env.MONGO_URL,
     { useNewUrlParser: true, useUnifiedTopology: true },
