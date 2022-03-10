@@ -8,6 +8,7 @@ function App() {
     
     zoom: 3.5
   });
+  const [showPopup, setShowPopup] = React.useState(true);
   return (
 
     <ReactMapGL
@@ -20,6 +21,11 @@ function App() {
         <Marker longitude={2.29449905431968} latitude={48.8582602} offsetLeft={-20} offsetTop={-10}>
       <Room style={{fontSize:viewState.zoom*10}}/>
     </Marker>
+    <Popup longitude={2.29449905431968} latitude={48.8582602}
+        anchor="left"
+        onClose={() => setShowPopup(false)}>
+        You are here
+      </Popup>
       </ReactMapGL>
     
   );
