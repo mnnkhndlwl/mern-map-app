@@ -9,7 +9,7 @@ import { format } from "timeago.js";
 
 function App() {
 
-  const currentUser = "Manan";
+  const currentUser = "Manushi";
   const [viewState, setViewState] = React.useState({
     latitude: 47.040182,
     longitude: 17.071727,
@@ -104,7 +104,7 @@ function App() {
                   <p className="desc">{p.desc}</p>
                   <label>Rating</label>
                   <div className="stars">
-                    <Star className="star" />
+                  {Array(p.rating).fill(<Star className="star" />)}
                   </div>
                   <label>Information</label>
                   <span className="username">Created By <b>{p.username}</b></span>
