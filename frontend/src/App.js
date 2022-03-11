@@ -41,7 +41,7 @@ function App() {
       username:currentUser,
       title,
       desc,
-      rating:5,
+      rating,
       long: newPlace.long,
       lat: newPlace.lat,
       
