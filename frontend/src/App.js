@@ -17,6 +17,9 @@ function App() {
   });
   const [showPopup, setShowPopup] = React.useState(true);
   const [pins, setPins] = useState([]);
+  const [title, setTitle] = useState(null);
+  const [rating, setRating] = useState(null);
+  const [desc, setDesc] = useState(0);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
 
@@ -31,6 +34,26 @@ function App() {
     }
     getPins();
   }, [])
+
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
+    const newPin = {
+      username:currentUser,
+      title,
+      desc,
+      rating:5,
+      long: newPlace.long,
+      lat: newPlace.lat,
+      
+    };
+    try {
+      const response = await axios.post("pins/new",newPin);
+      setPins([...pins, response.data]);
+      setNewPlace(null);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const handleMarkerClick = (id,lat,long) => {
     setCurrentPlaceId(id);
@@ -100,13 +123,14 @@ function App() {
             anchor="left"
             >
               <div>
-                <form>
+                <form onSubmit={handleSubmit}> 
                   <label>Title</label>
-                  <input placeholder="Enter tittle" />
+                  <input placeholder="Enter tittle" autoFocus
+                    onChange={(e) => setTitle(e.target.value)}/>
                   <label>Review</label>
-                  <textarea placeholder="Kuch btaiye iss jagah ke bare me"></textarea>
+                  <textarea placeholder="Kuch btaiye iss jagah ke bare me! kesi lagi"  onChange={(e) => setDesc(e.target.value)}></textarea>
                   <label>Rating</label>
-                  <select>
+                  <select  onChange={(e) => setRating(e.target.value)}>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
