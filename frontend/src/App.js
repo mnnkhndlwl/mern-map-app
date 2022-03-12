@@ -6,10 +6,11 @@ import "./app.css";
 import React from "react";
 import axios from "axios";
 import { format } from "timeago.js";
+import Register from "./components/Register";
 
 function App() {
 
-  const currentUser = "Manushi";
+  const [currentUser, setCurrentUser] = useState(null);
   const [viewState, setViewState] = React.useState({
     latitude: 47.040182,
     longitude: 17.071727,
@@ -35,19 +36,19 @@ function App() {
     getPins();
   }, [])
 
-  const handleSubmit = async (e) =>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newPin = {
-      username:currentUser,
+      username: currentUser,
       title,
       desc,
       rating,
       long: newPlace.long,
       lat: newPlace.lat,
-      
+
     };
     try {
-      const response = await axios.post("pins/new",newPin);
+      const response = await axios.post("pins/new", newPin);
       setPins([...pins, response.data]);
       setNewPlace(null);
     } catch (error) {
@@ -55,9 +56,9 @@ function App() {
     }
   }
 
-  const handleMarkerClick = (id,lat,long) => {
+  const handleMarkerClick = (id, lat, long) => {
     setCurrentPlaceId(id);
-    setViewState({ ...viewState, latitude: lat, longitude: long ,zoom :4 }); // on clicking centering the map and it will change 
+    setViewState({ ...viewState, latitude: lat, longitude: long, zoom: 4 }); // on clicking centering the map and it will change 
     // latitute and longitude
   }
 
@@ -86,7 +87,7 @@ function App() {
             {/**Marker */}
             <Marker longitude={p.long} latitude={p.lat} offsetLeft={-20} offsetTop={-10}>
               <Room style={{ fontSize: viewState.zoom * 10, color: (p.username === currentUser) ? "blue" : "red", cursor: "pointer" }}
-                onClick={() => handleMarkerClick(p._id,p.lat,p.long)}
+                onClick={() => handleMarkerClick(p._id, p.lat, p.long)}
               />
             </Marker>
             {/**Location Card */}
@@ -104,7 +105,7 @@ function App() {
                   <p className="desc">{p.desc}</p>
                   <label>Rating</label>
                   <div className="stars">
-                  {Array(p.rating).fill(<Star className="star" />)}
+                    {Array(p.rating).fill(<Star className="star" />)}
                   </div>
                   <label>Information</label>
                   <span className="username">Created By <b>{p.username}</b></span>
@@ -115,33 +116,40 @@ function App() {
           </>
         ))}
         {newPlace && (
-            <Popup latitude={newPlace.lat}
+          <Popup latitude={newPlace.lat}
             longitude={newPlace.long}
             closeButton={true}
             closeOnClick={false}
             onClose={() => setNewPlace(null)}
             anchor="left"
-            >
-              <div>
-                <form onSubmit={handleSubmit}> 
-                  <label>Title</label>
-                  <input placeholder="Enter tittle" autoFocus
-                    onChange={(e) => setTitle(e.target.value)}/>
-                  <label>Review</label>
-                  <textarea placeholder="Kuch btaiye iss jagah ke bare me! kesi lagi"  onChange={(e) => setDesc(e.target.value)}></textarea>
-                  <label>Rating</label>
-                  <select  onChange={(e) => setRating(e.target.value)}>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
-                  <button className="submitButton" type="submit">Add new Location</button>
-                </form>
-              </div>
-            </Popup>
-          )} 
+          >
+            <div>
+              <form onSubmit={handleSubmit}>
+                <label>Title</label>
+                <input placeholder="Enter tittle" autoFocus
+                  onChange={(e) => setTitle(e.target.value)} />
+                <label>Review</label>
+                <textarea placeholder="Kuch btaiye iss jagah ke bare me! kesi lagi" onChange={(e) => setDesc(e.target.value)}></textarea>
+                <label>Rating</label>
+                <select onChange={(e) => setRating(e.target.value)}>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                <button className="submitButton" type="submit">Add new Location</button>
+              </form>
+            </div>
+          </Popup>
+        )}
+        {currentUser ? (<button className="button logout">Log Out</button>) : (
+          <div className="buttons">
+            <button className="button login">Login</button>
+            <button className="button register">Register</button>
+          </div>
+        )}
+        <Register />
       </ReactMapGL>
     </div>
   );

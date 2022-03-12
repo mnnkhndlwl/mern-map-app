@@ -60,5 +60,31 @@ input::placeholder , textarea::placeholder{
     border-radius: 5px;
     width: max-content;
     cursor: pointer;
-    
+    font-weight: 500;
 }
+
+.button:focus{
+    outline: none;
+  }
+
+  .buttons,
+  .logout {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+    
+  .logout{
+    background-color: tomato;
+    cursor: pointer;
+  }
+  
+  .login{
+    background-color: teal;
+    margin-right: 10px;
+  }
+  
+  .register{
+    background-color: slateblue;
+  }
