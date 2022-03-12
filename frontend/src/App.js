@@ -10,8 +10,8 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 
 function App() {
-
-  const [currentUser, setCurrentUser] = useState(null);
+  const myStorage = window.localStorage;
+  const [currentUser, setCurrentUser] =  useState(myStorage.getItem("user"));
   const [viewState, setViewState] = React.useState({
     latitude: 47.040182,
     longitude: 17.071727,
@@ -73,6 +73,11 @@ function App() {
       lat: latitude,
       long: longitude,
     });
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    myStorage.removeItem("user");
   };
 
   return (
@@ -146,7 +151,7 @@ function App() {
             </div>
           </Popup>
         )}
-        {currentUser ? (<button className="button logout">Log Out</button>) : (
+        {currentUser ? (<button className="button logout" onClick={handleLogout}>Log Out</button>) : (
           <div className="buttons">
             <button className="button login" onClick={() => setShowLogin(true)}>Login</button>
             <button className="button register"  onClick={() => setShowRegister(true)}>Register</button>
@@ -154,7 +159,7 @@ function App() {
         )} 
         {/* Passing setShowRegister and setShowLogin to their respective components */}
         {showRegister &&  <Register setShowRegister={setShowRegister}/>}
-        {showLogin && <Login setShowLogin={setShowLogin}/>}
+        {showLogin && <Login setShowLogin={setShowLogin} myStorage={myStorage} setCurrentUsername={setCurrentUser}/>}
       </ReactMapGL>
     </div>
   );

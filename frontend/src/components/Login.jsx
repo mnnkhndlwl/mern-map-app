@@ -5,20 +5,23 @@ import "./login.css"
 import axios from 'axios';
 import { Cancel } from '@material-ui/icons';
 
-export default function Login({setShowLogin}) {
-
+export default function Login({setShowLogin,setCurrentUsername,myStorage}) {
+  
   const [error, setError] = useState(false);
   const usernameRef = useRef();
   const passwordRef = useRef();
 
   const handleSubmit = async (e) =>{
     e.preventDefault();
-    const newUser = {
+    const user = {
       username: usernameRef.current.value,
       password: passwordRef.current.value,
     };
     try {
-      await axios.post("/users/register", newUser);
+        const res = await axios.post("/users/login", user);
+      setCurrentUsername(res.data.username);
+      myStorage.setItem('user', res.data.username);
+      setShowLogin(false)
       setError(false); 
     } catch (error) {
       setError(true);
